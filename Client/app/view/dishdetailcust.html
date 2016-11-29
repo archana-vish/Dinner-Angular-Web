@@ -1,0 +1,137 @@
+  
+<div class="wrapper">
+        <div class="header header-filter" style="background-image: url('assets/img/feast.jpg');"></div>
+
+        <div class="main main-raised">
+            <div class="profile-content">
+                <div class="container"  ng-controller="DishDetailController">
+                    <div class="col-xs-12" ng-if="!showDish">
+                        <h3>{{message}}</h3>
+                    </div>
+                    <div class="row" ng-if="showDish">
+                        <div class="content">
+                                    <br>
+                                    <!-- Dish tab -->
+                                      <div class="col-sm-12">
+                                        <div class=" media col-sm-3">
+                                            <img class="media-object media-left media-middle img-responsive img-padded-top"  ng-src={{dish.image}}>
+                                        </div>
+                                        <div class="col-sm-7">
+                                            <h4 class="title"> {{dish.name}} <small> Chef {{dish.chefname}} </small>
+                                                <span class="label label-success label-center">{{dish.cuisine}}</span>
+                                               <span class="label label-success label-center">{{dish.price|currency}}</span>
+                                            <!-- Star rating -->
+                                            <!--div ng-controller="RatingController as rating" class="container">
+                                                 <star-rating ng-model="rating.rating2" readonly="rating.isReadonly"></star-rating>
+                                            </div-->
+                                            <h6 class="text-danger">{{dish.allergy}}</h6>
+                                             <p>{{dish.description}}</p>
+                                        </div>
+                                        <div class="col-sm-2 text-left">
+                                            <br>
+                                            <a class="btn btn-round btn-sm btn-warning" ui-sref="app.favourites" >
+                                                <i class="material-icons">arrow_back</i> To Favourties</a>
+                                            <br>
+                                            <button class="btn btn-round btn-sm btn-warning" ui-sref="app.customermenu" >
+                                                <i class="material-icons">arrow_back</i> To Menu</button>
+                                            <br>
+                                              <button class="btn btn-round btn-sm btn-warning" ng-click="toggleAddFeedback()">
+                                                <i class="material-icons">star</i>
+                                                 {{showAddFeedback ? 'Cancel Feedback':'Add Feedback'}}
+                                            </button>
+
+                                             <button class="btn btn-round btn-sm btn-warning" ng-click="toggleFeedback()">
+                                                <i class="material-icons">star</i>
+                                                 {{showFeedback ? 'Hide Feedback':'Show Feedback'}}
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <br>
+                                           <!-- Add user feedback -->
+                                    <div ng-show="showAddFeedback">
+                                        <div class="col-sm-12">
+                                            <div class="col-sm-8">
+                                                <h6 class="title"> Add Comments </h6>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-9 col-sm-offset-1" ng-controller="DishCommentController">
+                                            <ul class="list-unstyled" ng-show="commentForm.$valid && !commentForm.$pristine">
+                                                <blockquote>
+                                                    <p> {{userRating.rating}} Stars</p>
+                                                    <p> {{userRating.comment}} </p>
+                                                    <footer>{{userRating.customer}}  </footer>
+                                                </blockquote>
+                                            </ul>
+                                            <form class="form-horizontal" name="commentForm" ng-submit="submitComment()" novalidate>
+                                                <div class="form-group">
+
+                                                    <div class="col-sm-10" ng-class="{ 'has-error' : commentForm.customer.$error.required && !commentForm.customer.$pristine }">
+                                                        <input type="text" class="form-control" id="customer" name="customer" placeholder="Enter Your Name" ng-model="userRating.customer" required>
+                                                        <span ng-show="commentForm.customer.$error.required && !commentForm.customer.$pristine" class="help-block">Your name is required.</span>
+                                                    </div>
+                                                  </div>
+                                                  <div class="form-group">
+
+                                                     <div class="col-sm-10" > 
+                                                         <input-stars max="5" ng-model="userRating.rating" >
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+
+                                                     <div class="col-sm-10" ng-class="{ 'has-error' : commentForm.comment.$error.required && !commentForm.comment.$pristine }">
+                                                        <textarea class="form-control" id="comment" name="comment" rows="2"  ng-model="userRating.comment" placeholder="Comments.." required></textarea>
+                                                         <span ng-show="commentForm.comment.$error.required && !commentForm.comment.$pristine" class="help-block">Your comments are required.</span>
+                                                     </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="col-sm-offset-2 col-sm-10">
+                                                        <button type="submit" class="btn btn-primary" ng-disabled="commentForm.$invalid">Send Feedback</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <!-- End of feedback -->
+                                    <!-- View user feedback -->
+                                    <div ng-show="showFeedback">
+                                        <div class="col-sm-12">
+                                            <div class="col-sm-8">
+                                                <h6 class="title"> Customer Comments </h6>
+                                            </div>
+                                            <div class="col-sm-4 form-group label-floating">
+                                                <select class="form-control" id="cuisine" style="font-family: 'FontAwesome', Arial;" aria-hidden="true" ng-model="orderByText">
+                                                    <option value="">Sort by customer/date/rating</option>
+                                                    <option value="customer">&#xf062; Customer</option>
+                                                    <option value="date">&#xf062; Date</option>
+                                                    <option value="rating">&#xf062; Rating</option>
+                                                    <option value="-customer"> &#xf063; Customer</option>
+                                                     <option value="-date">&#xf063; Date</option>
+                                                    <option value="-rating">&#xf063; Rating</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-9 col-sm-offset-1">
+                                            <ul class="list-unstyled">
+                                                <li ng-repeat="commentDtl in dish.comments | orderBy: orderByText">
+                                                    <blockquote>
+                                                        <input-stars max="5" ng-model="commentDtl.rating" readonly></input-stars>
+                                                        <p> {{commentDtl.comment}} </p>
+                                                        <footer>{{commentDtl.customer}} , {{commentDtl.date | date: mediumDate}} </footer>
+                                                    </blockquote>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <!-- End of feedback -->
+                                </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+ <!-- Control Center for Material Kit: activating the ripples, parallax effects, scripts from the example pages etc -->
+    
+  
+

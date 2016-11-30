@@ -1,0 +1,41 @@
+<body>
+    <div class="index-page">
+    <div class="wrapper">
+        <div class="header header-filter" style="background-image: url('assets/img/bg2.jpeg');">
+            <div class="container" ng-controller="DinnerHomeController">
+                <div class="row">
+                   <div class="col-md-8 col-md-offset-2">
+                        <div class="brand" >
+                            <h1 class="logo cursive">Dinner</h1>
+                        </div>
+                        <div class="col-md-8 col-md-offset-2">
+                             <div class="card card-plain">
+                                <form class="form" ng-submit="doLogin()">
+                                    <div class="content">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="material-icons">email</i>
+                                            </span>
+                                            <input type="text" class="form-control"  style="color: floralwhite" placeholder="Username..." id="username" class="form-control transparent" ng-model="loginData.username">
+                                        </div>
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="material-icons">lock_outline</i>
+                                            </span>
+                                            <input type="password" placeholder="Password..." style="color: floralwhite" id="password" class="form-control" ng-model="loginData.password" />
+                                        </div>
+                                        <div class="input-group col-md-12 col-md-offset-2">
+                                            <a class="btn btn-warning btn-fill"  ui-sref="app.managedishes">Login as chef</a>
+                                            <a class="btn btn-warning btn-fill" ui-sref="app.customermenu">Login as customer</a>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</body>

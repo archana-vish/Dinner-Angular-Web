@@ -1,0 +1,91 @@
+    <div class="wrapper">
+        <div class="header header-filter" style="background-image: url('assets/img/feast.jpg');"></div>
+
+        <div class="main main-raised">
+            <div class="profile-content">
+                <div class="container" ng-controller="EditDishController">
+                    <div class="col-xs-12" ng-if="!showDish">
+                        <h3>{{message}}</h3>
+                    </div>
+                    <div class="row" ng-if="showDish">
+                            <form class="form">
+                                <div class="card-signup header-primary text-center">
+                                    <h4>Edit your dish</h4>
+                                    <div class="social-line">
+                                        <label>
+                                            Get creative! Describe your dish and add it to your menu
+                                        </label>
+                                    </div>
+
+                                </div>
+
+                                <div class="content">
+                                    <br>
+
+                                    <!-- Image and details -->
+                                      <div class="input-group col-sm-12">
+                                          <!--
+                                        <div class="col-sm-6 img-wrapper">
+                                              <img ng-src={{dish.image}} id="dishimg" class="img-rounded" height="300" width="500">
+                                                <div class="img-overlay">
+                                                   <label class="btn btn-primary btn-round btn-file">
+                                                        <i class="material-icons">add</i> Change picture <input type="file" id="dishpicker" class="browse-button" onchange="previewFile();">
+                                                    </label>
+                                                </div>
+                                        </div>
+                                          -->
+                                            <div class="col-sm-6 img-wrapper">
+                                              <img ngf-thumbnail="dish.image " id="dishimg" class="img-rounded" height="300" width="500" ng-model="dish.image">
+                                                <div class="img-overlay">
+                                                   <label class="btn btn-primary btn-round btn-file">
+                                                        <i class="material-icons">add</i> Change picture 
+                                                       <input type="file" ngf-select ng-model="dish.image" name="dishpic" ngf-pattern="'image/*'" class="browse-button">
+                                                    </label>
+                                                </div>
+                                            </div> 
+                                        <div class="col-md-6">
+
+                                           <input type="text" id="dishname" class="form-control" placeholder="Dish's name..." ng-model=dish.name>
+                                           <input type="text" id="cuisine" class="form-control" placeholder="Cuisine.. eg. Italian, Greek, Indian etc" ng-model=dish.cuisine>
+                                            <!--
+                                           <select class="form-control" id="cuisine" ng-model=dish.cuisine>
+                                                <option> Cuisine Type </option>
+                                                <option>Indian</option>
+                                                <option>British</option>
+                                                <option>Chinese</option>
+                                                <option>Thai</option>
+                                            </select>
+                                            -->
+                                             <input type="text" id="price" class="form-control" placeholder="Price" ng-model=dish.price>
+                                             <input type="text" id="allergy" class="form-control" placeholder="Allergy Advice..." ng-model=dish.allergy>
+
+                                        </div>
+                                    </div>
+
+                                    <!-- Image and details -->
+                             
+                                    <div class="input-group col-sm-12">
+
+                                            <span class="input-group-addon">
+                                            </span>
+                                            <textarea id="dishdetail" class="form-control" rows="5" ng-model=dish.description> </textarea>
+
+                                    </div>
+                                  
+                                </div>
+                                <div class="footer text-right">
+                                    <button class="btn btn-primary" ui-sref="app.managedishes">Back to dishes</button>
+                                    <button type="submit"  ng-click="editDish(dish.image)" class="btn btn-primary">Save my dish</button>
+                                </div>
+                            </form>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+<script src="assets/js/material-kit.js" type="text/javascript"></script>
+
+ 

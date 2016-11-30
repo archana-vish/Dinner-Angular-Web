@@ -12,6 +12,7 @@ angular
 .controller('DishController', ['$scope','dishFactory', 'menuFactory' , '$state', function($scope, dishFactory, menuFactory, $state) {
             $scope.showDishes = false;
             $scope.message = "Loading ...";
+            $scope.imgURL = "https://localhost:3443/";
             dishFactory.query(            
                 function(response) {
                     $scope.dishes = response;
@@ -39,6 +40,7 @@ angular
             $scope.showDish = false;
             $scope.message="Loading ...";
             $scope.stars = 5;
+            $scope.imgURL = "https://localhost:3443/";
         
              dishFactory.get({id:$stateParams.id})
             .$promise.then(
@@ -76,6 +78,7 @@ angular
         
             $scope.showDish = false;
             $scope.message="Loading ...";
+            $scope.imgURL = "https://localhost:3443/";
     
              $scope.submit = function() {
               if ($scope.form.dishpic.$valid && $scope.dishpic) {
@@ -101,7 +104,7 @@ angular
                 console.log($scope.dish.image);
                 console.log($scope.dish.image.name);
                 if ($scope.dish.image.name !== undefined) {
-                     $scope.dish.image = 'assets/img/dishes/' + $scope.dish.image.name;
+                     $scope.dish.image = 'uploads/dishes/' + $scope.dish.image.name;
                 } 
                
                 dishFactory.update({id:$scope.dish._id}, $scope.dish);
@@ -122,7 +125,7 @@ angular
                       $timeout(function () {
                         file.result = response.data;
                         console.log('Success ' + response.status + ' : ' + response.data + ' : ' + response.data.filename);
-                        $scope.dish.image = './uploads/dishes/' + response.data.filename;
+                        $scope.dish.image = 'uploads/dishes/' + response.data.filename;
                         console.log('new image :: ' + $scope.dish.image);
                           dishFactory.update({id:$scope.dish._id}, $scope.dish);
                           $window.location.reload();
@@ -146,7 +149,7 @@ angular
             };
 }])
  .controller('DishCommentController', ['$scope', 'dishFactory', function($scope,dishFactory) { 
-     $scope.userRating = {rating:5, comment:"", customer:"", date:""};
+       $scope.userRating = {rating:5, comment:"", customer:"", date:""};
        $scope.submitComment = function () {
        $scope.userRating.date = new Date().toISOString();
        console.log($scope.userRating);
@@ -167,15 +170,16 @@ $scope.orderByText = "";
 .controller('AddDishController',['$scope','$timeout', 'dishFactory', 'Upload', function($scope, $timeout, dishFactory, Upload ) {
     $scope.orderByText = "";
     $scope.newDish = {name:"", image: "", cuisine: "", price: "", allergy: "", description: ""};
+    $scope.imgURL = "https://localhost:3443/";
     
     
      $scope.createDish = function(file) {
         //file = $scope.newDish.image;
          if (file === undefined) {
-             $scope.newDish.image  = 'assets/img/dishes/myDish.jpg';
+             $scope.newDish.image  = 'uploads/dishes/myDish.jpg';
               dishFactory.save($scope.newDish);
               $scope.picFile = "";
-                $scope.newDish = {name:"", image: "assets/img/dishes/myDish.jpg", cuisine: "", price: "", allergy: "", description: ""}; 
+                $scope.newDish = {name:"", image: "uploads/dishes/myDish.jpg", cuisine: "", price: "", allergy: "", description: ""}; 
                 $scope.addDishForm.$setPristine(); 
          } else {
             console.log('file is ' + file);
@@ -188,12 +192,12 @@ $scope.orderByText = "";
               $timeout(function () {
                 file.result = response.data;
                 console.log('Success ' + response.status + ' : ' + response.data + ' : ' + response.data.filename);
-                $scope.newDish.image = './uploads/dishes/' + response.data.filename;
+                $scope.newDish.image = 'uploads/dishes/' + response.data.filename;
                 console.log($scope.newDish.description);
 
                 dishFactory.save($scope.newDish);
                   $scope.picFile = "";
-                $scope.newDish = {name:"", image: "assets/img/dishes/myDish.jpg", cuisine: "", price: "", allergy: "", description: ""}; 
+                $scope.newDish = {name:"", image: "uploads/dishes/myDish.jpg", cuisine: "", price: "", allergy: "", description: ""}; 
                 $scope.addDishForm.$setPristine(); 
               });
             }, function (response) {
@@ -259,6 +263,7 @@ $scope.orderByText = "";
 .controller('MenuController', ['$scope','menuFactory', 'dishFactory','favouriteFactory', '$state', function($scope,  menuFactory, dishFactory, favouriteFactory, $state) {
         $scope.showItems = false;
         $scope.message = "Loading ...";
+        $scope.imgURL = "https://localhost:3443/";
         //$scope.dishes = {};
     
         menuFactory.query(            

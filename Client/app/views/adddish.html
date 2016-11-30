@@ -1,0 +1,83 @@
+    <div class="wrapper">
+        <div class="header header-filter" style="background-image: url('assets/img/feast.jpg');"></div>
+
+        <div class="main main-raised">
+            <div class="profile-content">
+                <div class="container" ng-controller="AddDishController">
+                    <div class="row">
+                            <form class="form" name="addDishForm" >
+                                <div class="card-signup header-primary text-center">
+                                    <h4>Add your dish</h4>
+                                    <div class="social-line">
+                                        <label>
+                                            Get creative! Describe your dish and add it to your menu
+                                        </label>
+                                    </div>
+
+                                </div>
+
+                                <div class="content">
+                                    <br>
+
+                                    <!-- Image and details -->
+                                      <div class="input-group col-sm-12">
+                                          <div class="col-sm-6 img-wrapper">
+                                              <img ngf-thumbnail="picFile || '{{imgURL}}assets/img/dishes/myDish.jpg'" id="someid" class="img-rounded" height="300" width="500" ng-model="picFile">
+                                                <div class="img-overlay">
+                                                   <label class="btn btn-primary btn-round btn-file">
+                                                        <i class="material-icons">add</i> Add a picture 
+                                                       <input type="file" ngf-select ng-model="picFile" name="picFile" ngf-pattern="'image/*'" class="browse-button" required>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        <div class="col-md-6">
+                                           <input type="text" id="dishname" class="form-control" placeholder="Dish's name..." ng-model=newDish.name>
+                                           <input type="text" id="cuisine" class="form-control" placeholder="Cuisine.. eg. Italian, Greek, Indian etc" ng-model=newDish.cuisine>
+                                            <!--
+                                            <select class="form-control" id="cuisine" ng-model=dish.cuisine>
+                                                <option> Cuisine Type </option>
+                                                <option>Indian</option>
+                                                <option>British</option>
+                                                <option>Chinese</option>
+                                                <option>Thai</option>
+                                            </select-->
+                                           <input type="text" id="price" class="form-control" placeholder="Price" ng-model=newDish.price>
+                                           <input type="text" id="allergy" class="form-control" placeholder="Allergy Advice..." ng-model=newDish.allergy>
+                                        </div>
+                                    </div>
+
+                                    <!-- Image and details -->
+                                    <div class="input-group col-sm-12">
+
+                                             <span class="input-group-addon">
+                                            </span>
+                                            <label> About your dish.... </label>
+
+                                    </div>
+
+                                    <div class="input-group col-sm-12">
+
+                                            <span class="input-group-addon">
+                                            </span>
+                                            <textarea id="dishdetail" class="form-control" rows="5" ng-model=newDish.description> </textarea>
+
+                                    </div>
+                                  
+                                </div>
+                                <div class="footer text-right">
+                                    <button type="submit" ng-click="createDish(picFile)" class="btn btn-primary">Add my dish</button>
+                                </div>
+                                 
+                            </form>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+   
+<script src="assets/js/material-kit.js" type="text/javascript"></script>
+
+ 

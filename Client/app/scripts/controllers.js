@@ -93,6 +93,7 @@ angular
             .$promise.then(
                     function(response){
                         $scope.dish = response;
+                        $scope.dish.image = $scope.imgURL + $scope.dish.image;
                         $scope.showDish = true;
                     },
                     function(response) {
@@ -167,7 +168,7 @@ angular
 $scope.orderByText = "";
 }])
 
-.controller('AddDishController',['$scope','$timeout', 'dishFactory', 'Upload', function($scope, $timeout, dishFactory, Upload ) {
+.controller('AddDishController',['$scope','$timeout', 'dishFactory', 'Upload', '$state', function($scope, $timeout, dishFactory, Upload, $state ) {
     $scope.orderByText = "";
     $scope.newDish = {name:"", image: "", cuisine: "", price: "", allergy: "", description: ""};
     $scope.imgURL = "https://localhost:3443/";
@@ -196,9 +197,10 @@ $scope.orderByText = "";
                 console.log($scope.newDish.description);
 
                 dishFactory.save($scope.newDish);
-                  $scope.picFile = "";
+                $scope.picFile = "";
                 $scope.newDish = {name:"", image: "uploads/dishes/myDish.jpg", cuisine: "", price: "", allergy: "", description: ""}; 
                 $scope.addDishForm.$setPristine(); 
+                $state.go('app.managedishes',{}, {reload: true});
               });
             }, function (response) {
               if (response.status > 0) {

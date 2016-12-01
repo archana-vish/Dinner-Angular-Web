@@ -28,7 +28,7 @@ db.on('error', console.error.bind(console, 'connection error:'));
 
 
 db.once('open', function () {
-  
+
     // we're connected!
     console.log("Connected correctly to server");
 });
@@ -51,6 +51,8 @@ app.use(function(req, res, next) {
         next();
 });
 
+ //app.use(express.static(__dirname + '/public'));
+
 // Secure traffic only
 app.all('*', function(req, res, next){
   if (req.secure) {
@@ -58,7 +60,7 @@ app.all('*', function(req, res, next){
   };
 
  res.redirect('https://'+req.hostname+':'+app.get('secPort')+req.url);
-}); 
+});
 
 
 var newfilename = "";
@@ -74,23 +76,22 @@ var storage = multer.diskStorage({
     //cb(null, file.fieldname + '-' + Date.now())
   }
 })
- 
+
 var upload = multer({ storage: storage }).single('file');
 
 
 app.post('/dishes/upload', function(req, res) {
-       console.log('Am gonna cry now');
-       console.log('req ' + req);
        console.log('req.file :: ' + req.file);
        //upload.single(req.file);
        upload(req,res,function(err){
             if(err){
+                 console.log(err);
                  res.json({error_code:1,err_desc:err});
                  return;
             }
             console.log('newfilename :: ' + newfilename);
             res.json({filename: newfilename,error_code:0,err_desc:null});
-        }) 
+        })
 
 });
 

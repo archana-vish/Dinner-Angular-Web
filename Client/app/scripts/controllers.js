@@ -9,10 +9,10 @@
 
 angular
 .module('dinnerApp')
-.controller('DishController', ['$scope','dishFactory', 'menuFactory' , '$state', function($scope, dishFactory, menuFactory, $state) {
+.controller('DishController', ['$scope','dishFactory', 'menuFactory' , '$state', 'baseURL', function($scope, dishFactory, menuFactory, $state, baseURL) {
             $scope.showDishes = false;
             $scope.message = "Loading ...";
-            $scope.imgURL = "https://localhost:3443/";
+            $scope.imgURL = baseURL;
             dishFactory.query(
                 function(response) {
                     $scope.dishes = response;
@@ -31,7 +31,7 @@ angular
             };
 
 }])
-.controller('DishDetailController', ['$scope','$stateParams','dishFactory', 'menuFactory','$state', function($scope, $stateParams, dishFactory, menuFactory, $state) {
+.controller('DishDetailController', ['$scope','$stateParams','dishFactory', 'menuFactory','$state', 'baseURL', function($scope, $stateParams, dishFactory, menuFactory, $state, baseURL) {
             $scope.orderByText = "";
             $scope.showFeedback = true;
             $scope.showAddFeedback = true;
@@ -40,7 +40,7 @@ angular
             $scope.showDish = false;
             $scope.message="Loading ...";
             $scope.stars = 5;
-            $scope.imgURL = "https://localhost:3443/";
+            $scope.imgURL = baseURL;
 
              dishFactory.get({id:$stateParams.id})
             .$promise.then(
@@ -71,14 +71,14 @@ angular
             };
 }])
 
-.controller('EditDishController', ['$scope','$timeout','$stateParams','$window', 'dishFactory', 'Upload', function($scope, $timeout, $stateParams, $window, dishFactory, Upload) {
+.controller('EditDishController', ['$scope','$timeout','$stateParams','$window', 'dishFactory', 'Upload', 'baseURL', function($scope, $timeout, $stateParams, $window, dishFactory, Upload, baseURL) {
             $scope.orderByText = "";
             $scope.showFeedback = true;
             $scope.showAddFeedback = true;
 
             $scope.showDish = false;
             $scope.message="Loading ...";
-            $scope.imgURL = "https://localhost:3443/";
+            $scope.imgURL = baseURL;
 
             $scope.dish = {};
 
@@ -105,7 +105,7 @@ angular
                  else {
                      //$scope.dish.image = 'assets/img/dishes/' + $scope.dish.image.name;
                      file.upload = Upload.upload({
-                      url: 'https://localhost:3443/dishes/upload',
+                      url: 'http://localhost:3000/dishes/upload',
                       data: {file: file}
                     });
                     file.upload.then(function (response) {
@@ -146,10 +146,10 @@ angular
 $scope.orderByText = "";
 }])
 
-.controller('AddDishController',['$scope','$timeout', 'dishFactory', 'Upload', '$state', function($scope, $timeout, dishFactory, Upload, $state ) {
+.controller('AddDishController',['$scope','$timeout', 'dishFactory', 'Upload', '$state', 'baseURL', function($scope, $timeout, dishFactory, Upload, $state, baseURL ) {
     $scope.orderByText = "";
     $scope.newDish = {name:"", image: "", cuisine: "", price: "", allergy: "", description: ""};
-    $scope.imgURL = "https://localhost:3443/";
+    $scope.imgURL = baseURL;
 
 
      $scope.createDish = function(file) {
@@ -163,7 +163,7 @@ $scope.orderByText = "";
          } else {
             console.log('file is ' + file);
             file.upload = Upload.upload({
-              url: 'https://localhost:3443/dishes/upload',
+              url: 'http://localhost:3000/dishes/upload',
               data: {file: file}
             });
 
@@ -240,10 +240,10 @@ $scope.orderByText = "";
 
 }])
 
-.controller('MenuController', ['$scope','menuFactory', 'dishFactory','favouriteFactory', '$state', function($scope,  menuFactory, dishFactory, favouriteFactory, $state) {
+.controller('MenuController', ['$scope','menuFactory', 'dishFactory','favouriteFactory', '$state', 'baseURL', function($scope,  menuFactory, dishFactory, favouriteFactory, $state, baseURL) {
         $scope.showItems = false;
         $scope.message = "Loading ...";
-        $scope.imgURL = "https://localhost:3443/";
+        $scope.imgURL = baseURL;
         //$scope.dishes = {};
 
         menuFactory.query(

@@ -14,6 +14,7 @@ var bodyParser = require('body-parser');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var multer = require('multer');
+var cors = require('cors');
 
 
 
@@ -44,12 +45,14 @@ var uploadRouter = require('./routes/uploadRouter');
 
 var app = express();
 
+app.use(cors());
+app.options('*', cors());
 
-app.use(function(req, res, next) {
-        res.header("Access-Control-Allow-Origin", "https://localhost");
+/*app.use(function(req, res, next) {
+        res.header("Access-Control-Allow-Origin", "https://*");
         res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
         next();
-});
+}); */
 
  //app.use(express.static(__dirname + '/public'));
 

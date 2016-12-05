@@ -25,8 +25,9 @@
                                             <input type="password" placeholder="Password..." style="color: floralwhite" id="password" class="form-control" ng-model="loginData.password" />
                                         </div>
                                         <div class="input-group col-md-12 col-md-offset-4">
-                                            <a class="btn btn-warning btn-fill"  ui-sref="app.managedishes">Login as chef</a>
+                                            <!--a class="btn btn-warning btn-fill"  ui-sref="app.managedishes">Login as chef</a-->
                                             <!--a class="btn btn-warning btn-fill" ui-sref="app.customermenu">Login as customer</a-->
+                                            <button class="btn btn-warning btn-fill"  ng-click="doLogin()">Login as chef</button>
                                         </div>
                                     </div>
                                 </form>

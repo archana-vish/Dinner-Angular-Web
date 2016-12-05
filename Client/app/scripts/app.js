@@ -15,7 +15,8 @@ angular
                 url:'/',
                 views: {
                     'header': {
-                        templateUrl : 'views/headerhome.html'
+                        templateUrl : 'views/headerhome.html',
+                        controller  : 'DinnerHomeController'
                     },
                     'content': {
                         templateUrl : 'views/dinnerhome.html',

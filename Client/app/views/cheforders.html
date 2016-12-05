@@ -27,7 +27,8 @@
                                       <div ng-if="orders.length === 0">
                                           <h4 class="title"> No orders yet...
                                       </div>
-                                      <div ng-repeat="order in orders | orderBy: '-id' | filter : {status : '!basket'} | filter: sortby">
+                                      <span ng-model="chefid"></span>      
+                                      <div ng-repeat="order in orders | orderBy: '-id' | filter:chefid | filter : {status : '!basket'} | filter: sortby">
                                       <div class="col-sm-12">
                                       <!-- Orders tab -->
 

@@ -18,7 +18,7 @@ var Dishes = require('../models/dishes');
 dishRouter.use(bodyParser.json());
 
 dishRouter.route('/')
-//.all(Verify.verifyOrdinaryUser)
+.all(Verify.verifyOrdinaryUser)
 .get(function (req, res, next) {
         Dishes.find({})
             .populate('chef')
@@ -30,7 +30,7 @@ dishRouter.route('/')
 })
 .post(Verify.verifyChef, function (req, res, next) {
 //.post(function (req, res, next) {
-    req.body.chef = '58182134409b1a0bc34e7801'; //req.decoded._doc._id;
+    //req.body.chef = req.decoded._doc._id;
     Dishes.create(req.body, function (err, dish) {
         if (err) {
             throw err;

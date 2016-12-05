@@ -18,7 +18,7 @@
                             <i class="material-icons">dashboard</i> Home
                         </a>
                     </li>
-                    <!--li ng-if="!loggedIn"><a ng-click="openLogin()">
+                    <li ng-if="!loggedIn"><a ui-sref="app">
                         <span class="glyphicon glyphicon-log-in"></span> Login</a>
                     </li>
                     <li ng-if="loggedIn">
@@ -27,11 +27,11 @@
                     <li ng-if="loggedIn">
                         <a ng-click="logOut()">
                         <span class="glyphicon glyphicon-log-in"></span> Logout</a>
-                    </li-->
-                    <li>
+                    </li>
+                    <!--li>
                         <a ui-sref="app">
                         <span class="glyphicon glyphicon-log-in"></span> Logout</a>
-                    </li>
+                    </li-->
                     <li class="dropdown">
                      <a class="dropdown-toggle" data-toggle="dropdown">
                         <i class="material-icons">view_module</i> <b class="caret"></b>

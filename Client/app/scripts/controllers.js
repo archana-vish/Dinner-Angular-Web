@@ -9,10 +9,13 @@
 
 angular
 .module('dinnerApp')
-.controller('DishController', ['$scope','dishFactory', 'menuFactory' , '$state', 'baseURL', function($scope, dishFactory, menuFactory, $state, baseURL) {
+.controller('DishController', ['$scope','dishFactory', 'menuFactory' , '$state', 'baseURL', 'AuthFactory', function($scope, dishFactory, menuFactory, $state, baseURL, AuthFactory) {
             $scope.showDishes = false;
             $scope.message = "Loading ...";
             $scope.imgURL = baseURL;
+            console.log('user id %s ', AuthFactory.getUserId());
+            $scope.chefid = AuthFactory.getUserId();
+    
             dishFactory.query(
                 function(response) {
                     $scope.dishes = response;
@@ -146,10 +149,11 @@ angular
 $scope.orderByText = "";
 }])
 
-.controller('AddDishController',['$scope','$timeout', 'dishFactory', 'Upload', '$state', 'baseURL', function($scope, $timeout, dishFactory, Upload, $state, baseURL ) {
+.controller('AddDishController',['$scope','$timeout', 'dishFactory', 'Upload', '$state', 'baseURL', 'AuthFactory', function($scope, $timeout, dishFactory, Upload, $state, baseURL, AuthFactory ) {
     $scope.orderByText = "";
     $scope.newDish = {name:"", image: "", cuisine: "", price: "", allergy: "", description: ""};
     $scope.imgURL = baseURL;
+    console.log('chef id :: %s ', AuthFactory.getUserId());
 
 
      $scope.createDish = function(file) {
@@ -173,7 +177,8 @@ $scope.orderByText = "";
                 console.log('Success ' + response.status + ' : ' + response.data + ' : ' + response.data.filename);
                 $scope.newDish.image = 'uploads/dishes/' + response.data.filename;
                 console.log($scope.newDish.description);
-
+                  
+                $scope.newDish.chef = AuthFactory.getUserId();
                 dishFactory.save($scope.newDish);
                 $scope.picFile = "";
                 $scope.newDish = {name:"", image: "uploads/dishes/myDish.jpg", cuisine: "", price: "", allergy: "", description: ""};
@@ -191,60 +196,77 @@ $scope.orderByText = "";
     };
 }])
 
-.controller('DinnerHomeController',['$scope','$localStorage', '$window', 'AuthFactory', function($scope, $localStorage, $window, AuthFactory) {
+.controller('DinnerHomeController',['$scope','$localStorage', '$window', 'AuthFactory', '$state', '$timeout', function($scope, $localStorage, $window, AuthFactory, $state, $timeout) {
     $scope.orderByText = "";
     $scope.loginData = $localStorage.getObject('userinfo','{}');
     $scope.doLogin = function() {
           if($scope.rememberMe) {
            $localStorage.storeObject('userinfo',$scope.loginData);
           }
-        AuthFactory.login($scope.loginData);
-        $window.location.href = "index.html#/managedishes/";
+       $timeout(AuthFactory.login($scope.loginData));
+        if(AuthFactory.isAuthenticated()) {
+            $scope.loggedIn = true;
+            $scope.username = AuthFactory.getUsername();
+            $state.go('app.managedishes',{},{reload:true});
+        }
     };
 }])
 
 
-.controller('HeaderController', ['$scope', '$state', '$rootScope', 'AuthFactory', function ($scope, $state, $rootScope, AuthFactory) {
+.controller('HeaderController', ['$scope', '$state', '$rootScope', 'AuthFactory', '$localStorage', '$window', function ($scope, $state, $rootScope, AuthFactory, $localStorage, $window) {
 
     $scope.loggedIn = false;
     $scope.username = '';
+    $scope.userid = '';
 
     if(AuthFactory.isAuthenticated()) {
         $scope.loggedIn = true;
         $scope.username = AuthFactory.getUsername();
-    }
+        $scope.userid = AuthFactory.getUserId();
+    } 
 
     $scope.openLogin = function () {
         //ngDialog.open({ template: 'views/login.html', scope: $scope, className: 'ngdialog-theme-default', controller:"LoginController" });
     };
 
     $scope.logOut = function() {
-       AuthFactory.logout();
+        AuthFactory.logout();
         $scope.loggedIn = false;
         $scope.username = '';
+        $scope.userid = '';
+        $state.go('app',null,{reload: true});
     };
 
     $rootScope.$on('login:Successful', function () {
         $scope.loggedIn = AuthFactory.isAuthenticated();
         $scope.username = AuthFactory.getUsername();
+        $scope.userid = AuthFactory.getUserId();
     });
 
     $rootScope.$on('registration:Successful', function () {
         $scope.loggedIn = AuthFactory.isAuthenticated();
         $scope.username = AuthFactory.getUsername();
+        $scope.userid = AuthFactory.getUserId();
     });
+    
+    /*$rootScope.$on('logout:Successful', function () {
+        $scope.rememberMe = false;
+    });*/
 
-    $scope.stateis = function(curstate) {
+    /*$scope.stateis = function(curstate) {
        return $state.is(curstate);
-    };
+    };*/
+    
+    
 
 }])
 
-.controller('MenuController', ['$scope','menuFactory', 'dishFactory','favouriteFactory', '$state', 'baseURL', function($scope,  menuFactory, dishFactory, favouriteFactory, $state, baseURL) {
+.controller('MenuController', ['$scope','menuFactory', 'dishFactory','favouriteFactory', '$state', 'baseURL', 'AuthFactory', function($scope,  menuFactory, dishFactory, favouriteFactory, $state, baseURL, AuthFactory) {
         $scope.showItems = false;
         $scope.message = "Loading ...";
         $scope.imgURL = baseURL;
         //$scope.dishes = {};
+        $scope.chefid = AuthFactory.getUserId();
 
         menuFactory.query(
             function(response) {
@@ -318,10 +340,11 @@ $scope.orderByText = "";
         };
 }])
 
-.controller('ChefOrderController',['$scope','$window','orderFactory', function($scope, $window,orderFactory) {
+.controller('ChefOrderController',['$scope','$window','orderFactory', 'AuthFactory', function($scope, $window,orderFactory, AuthFactory) {
     $scope.orderByText = "";
     $scope.showOrder = false;
     $scope.message = "Loading ...";
+    $scope.chefid = AuthFactory.getUserId();
 
 
     orderFactory.query(

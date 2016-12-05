@@ -25,8 +25,8 @@ router.get('/', function(req, res, next) {
 
 router.post('/signup', function(req, res) {
     User.register(new User(
-        { 
-            username : req.body.username, 
+        {
+            username : req.body.username,
             emailid: req.body.emailid,
             password: req.body.password,
             firstname: req.body.firstname,
@@ -39,7 +39,7 @@ router.post('/signup', function(req, res) {
         if (err) {
             return res.status(500).json({err: err});
         }
-        
+
         /*if(req.body.firstname) {
             user.firstname = req.body.firstname;
         }
@@ -58,25 +58,25 @@ router.post('/signup', function(req, res) {
         if(req.body.chef) {
             user.chef = req.body.chef;
         } */
-        
-        
+
+
         /*user.save(function(err,user) {
             passport.authenticate('local')(req, res, function () {
                 return res.status(200).json({status: 'Registration Successful!'});
             });
         });*/
-        
-        
+
+
         passport.authenticate('local')(req, res, function () {
             return res.status(200).json({status: 'Registration Successful!'});
-        }); 
+        });
     });
 });
 
 router.post('/login', function(req, res, next) {
   passport.authenticate('local', function(err, user, info) {
     if (err) {
-        console.log('erro logging in...');
+        console.log('error logging in...');
       return next(err);
     }
     if (!user) {
@@ -90,13 +90,16 @@ router.post('/login', function(req, res, next) {
           err: 'Could not log in user'
         });
       }
-        
+
       //var token = Verify.getToken(user);
+      //console.log('user name %s, user id %s, chef %s', user.username, user._id, user.chef);
        var token = Verify.getToken({"username":user.username, "_id":user._id, "chef":user.chef});
-              res.status(200).json({
+       //console.log('Token is %s' , token);
+        res.status(200).json({
         status: 'Login successful!',
         success: true,
-        token: token
+        token: token,
+        userid: user._id
       });
     });
   })(req,res,next);

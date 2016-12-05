@@ -25,8 +25,8 @@
                                                 <input id="sortby" type="text" placeholder="Quick search for..." ng-model="sortby" >
                                             </div>
                                     <!-- Dish tab -->
-                                    
-                                    <div ng-repeat="dish in dishes | filter: sortby">
+                                    <span ng-model="chefid"></span>
+                                    <div ng-repeat="dish in dishes | orderBy: '-id' |  filter:chefid | filter: sortby">
                                       <div class="col-sm-12">
                                         <div class=" media col-sm-3">
                                             <a ui-sref="app.dishdetail({id: dish._id})">

@@ -27,8 +27,8 @@
                                     <div ng-if="menuItems.length === 0">
                                         <h4 class="title"> No items in Menu..
                                     </div>
-                                  
-                                    <div ng-repeat="items in menuItems | filter: sortby" ng-init="dish = items.dishes">
+                                    <span ng-model="chefid"></span>
+                                    <div ng-repeat="items in menuItems | filter:chefid | filter: sortby" ng-init="dish = items.dishes">
                                       <div class="col-sm-12">
                                         <div class=" media col-sm-3">
                                             <a ui-sref="app.dishdetail({id: dish._id})">

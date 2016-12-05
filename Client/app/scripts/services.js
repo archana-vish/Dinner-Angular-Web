@@ -81,13 +81,14 @@ angular
         TOKEN_KEY = 'Token',
         isAuthenticated = false,
         username = '',
-        isChef = false,
+        userid = '',
         authToken = null;
 
     function useCredentials(credentials) {
         isAuthenticated = true;
         username = credentials.username;
         authToken = credentials.token;
+        userid = credentials.userid;
 
         // Set the token as header for your requests!
         $http.defaults.headers.common['x-access-token'] = authToken;
@@ -110,9 +111,12 @@ angular
   function destroyUserCredentials() {
     authToken = undefined;
     username = '';
+    userid = '';
     isAuthenticated = false;
     $http.defaults.headers.common['x-access-token'] = authToken;
     $localStorage.remove(TOKEN_KEY);
+      $rootScope.$broadcast('logout:Successful');
+      console.log('Token removed. destroyUserCredentials');
   }
 
     authFac.login = function(loginData) {
@@ -120,9 +124,9 @@ angular
         $resource(baseURL + "users/login") //resource end point on rest api server!!
         .save(loginData,
            function(response) {
-
-              storeUserCredentials({username:loginData.username, token: response.token});
+              storeUserCredentials({username:loginData.username, token: response.token, userid: response.userid});
               $rootScope.$broadcast('login:Successful');
+              return;
            },
            function(response){
               isAuthenticated = false;
@@ -131,9 +135,12 @@ angular
     };
 
     authFac.logout = function() {
+         
         $resource(baseURL + "users/logout").get(function(response){
+            $rootScope.$broadcast('logout:Successful');
         });
         destroyUserCredentials();
+       
     };
 
     authFac.register = function(registerData) {
@@ -163,6 +170,10 @@ angular
 
     authFac.getUsername = function() {
         return username;
+    };
+    
+    authFac.getUserId = function() {
+        return userid;
     };
 
     loadUserCredentials();

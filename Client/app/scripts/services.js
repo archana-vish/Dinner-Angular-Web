@@ -94,7 +94,7 @@ angular
 }])
 
 
-.factory('AuthFactory', ['$resource', '$http', '$localStorage', '$rootScope','$window', 'baseURL', '$timeout', function($resource, $http, $localStorage, $rootScope, $window, baseURL, $timeout){
+.factory('AuthFactory', ['$resource', '$http', '$localStorage', '$rootScope','$window', 'baseURL', function($resource, $http, $localStorage, $rootScope, $window, baseURL){
 
     var authFac = {},
         TOKEN_KEY = 'Token',
@@ -147,6 +147,7 @@ angular
               return;
            },
            function(response){
+              console.log("error response %s ", response);
               isAuthenticated = false;
            }
         );
@@ -156,6 +157,7 @@ angular
     authFac.logout = function() {
 
         $resource(baseURL + "users/logout").get(function(response){
+            console.log("Logged out %s", response);
             //$rootScope.$broadcast('logout:Successful');
         });
         destroyUserCredentials();
@@ -167,6 +169,7 @@ angular
         $resource(baseURL + "users/signup")
         .save(registerData,
            function(response) {
+              console.log("%s", response);
               authFac.login({username:registerData.username, password:registerData.password});
             if (registerData.rememberMe) {
                 $localStorage.storeObject('userinfo',
@@ -176,6 +179,7 @@ angular
               $rootScope.$broadcast('registration:Successful');
            },
            function(response){
+             console.log("response %s", response);
                 //ngDialog.openConfirm({ template: message, plain: 'true'});
 
            }

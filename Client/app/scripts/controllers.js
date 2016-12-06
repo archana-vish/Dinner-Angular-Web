@@ -194,7 +194,7 @@ angular
 }])
 
 
-.controller('HeaderController', ['$scope', '$state', '$rootScope', 'AuthFactory', '$localStorage', '$window', function ($scope, $state, $rootScope, AuthFactory, $localStorage, $window) {
+.controller('HeaderController', ['$scope', '$state', '$rootScope', 'AuthFactory', function ($scope, $state, $rootScope, AuthFactory) {
 
     $scope.loggedIn = false;
     $scope.username = '';
@@ -243,7 +243,7 @@ angular
 }])
 
 
-.controller('DinnerHomeController',['$scope','$localStorage', '$window', 'loginFactory','AuthFactory', '$state', '$timeout', function($scope, $localStorage, $window, loginFactory, AuthFactory, $state, $timeout) {
+.controller('DinnerHomeController',['$scope','$localStorage', '$window', 'loginFactory','AuthFactory', '$state', function($scope, $localStorage, $window, loginFactory, AuthFactory, $state) {
     $scope.orderByText = "";
     $scope.loginData = $localStorage.getObject('userinfo','{}');
 
@@ -262,7 +262,7 @@ angular
             //console.log(AuthFactory.isAuthenticated());
              $state.go('app.managedishes',{},{reload:true});
         }, function(response) {
-            //console.log('error %s', response);
+             console.log('error %s', response);
              AuthFactory.setAuthenticated(false);
             // console.log(AuthFactory.isAuthenticated());
         });
@@ -283,7 +283,7 @@ angular
         }
         registerFactory.save($scope.signup).$promise.then(
         function(response) {
-            //console.log(response);
+            console.log(response);
             $scope.loginData = {username:$scope.signup.username, password:$scope.signup.password};
             loginFactory.save($scope.loginData).$promise.then(
             function(response) {
@@ -296,7 +296,7 @@ angular
                 //console.log(AuthFactory.isAuthenticated());
                  $state.go('app.managedishes',{},{reload:true});
             }, function(response) {
-                //console.log('error %s', response);
+                 console.log('error %s', response);
                  AuthFactory.setAuthenticated(false);
                 // console.log(AuthFactory.isAuthenticated());
             });

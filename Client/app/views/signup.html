@@ -14,7 +14,8 @@
 									<div class="social-line">
 										<div class="checkbox">
                                             <label>
-                                                <input type="checkbox" id="profile" name="profile" checked="false" onclick="changePlaceHolder();"> Register as a chef
+                                                <!--input type="checkbox" id="profile" name="profile" checked="false" onclick="changePlaceHolder();" disabled--> Register as a chef
+                                                <input type="hidden" id="profile" ng-model="signup.chef" value="true"/>
                                             </label>
                                         </div>
 									</div>

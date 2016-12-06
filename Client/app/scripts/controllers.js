@@ -13,13 +13,13 @@ angular
             $scope.showDishes = false;
             $scope.message = "Loading ...";
             $scope.imgURL = baseURL;
-            console.log('user id %s ', AuthFactory.getUserId());
+            //console.log('user id %s ', AuthFactory.getUserId());
             $scope.chefid = AuthFactory.getUserId();
     
             dishFactory.query(
                 function(response) {
                     $scope.dishes = response;
-                    console.log(response);
+                    //console.log(response);
                     $scope.showDishes = true;
                 },
                 function(response) {
@@ -27,7 +27,7 @@ angular
                 });
 
             $scope.addToMenu = function(chefid, dishid) {
-                console.log('Add to menu %s %s ', chefid, dishid);
+                //console.log('Add to menu %s %s ', chefid, dishid);
                 menuFactory.save({chef: chefid, _id: dishid});
                 $state.go('app.todaysmenu',{},  {reload: true});
 
@@ -145,8 +145,16 @@ angular
 }])
 
 
-.controller('SignupController', ['$scope',function($scope) {
-$scope.orderByText = "";
+.controller('SignupController', ['$scope','AuthFactory', function($scope, AuthFactory) {
+    $scope.orderByText = "";
+    $scope.register={};
+    $scope.loginData={};
+    
+    $scope.signup = function() {
+        console.log('Doing registration', $scope.signup);
+
+        AuthFactory.register($scope.registration);
+    };
 }])
 
 .controller('AddDishController',['$scope','$timeout', 'dishFactory', 'Upload', '$state', 'baseURL', 'AuthFactory', function($scope, $timeout, dishFactory, Upload, $state, baseURL, AuthFactory ) {
@@ -196,22 +204,6 @@ $scope.orderByText = "";
     };
 }])
 
-.controller('DinnerHomeController',['$scope','$localStorage', '$window', 'AuthFactory', '$state', '$timeout', function($scope, $localStorage, $window, AuthFactory, $state, $timeout) {
-    $scope.orderByText = "";
-    $scope.loginData = $localStorage.getObject('userinfo','{}');
-    $scope.doLogin = function() {
-          if($scope.rememberMe) {
-           $localStorage.storeObject('userinfo',$scope.loginData);
-          }
-       $timeout(AuthFactory.login($scope.loginData));
-        if(AuthFactory.isAuthenticated()) {
-            $scope.loggedIn = true;
-            $scope.username = AuthFactory.getUsername();
-            $state.go('app.managedishes',{},{reload:true});
-        }
-    };
-}])
-
 
 .controller('HeaderController', ['$scope', '$state', '$rootScope', 'AuthFactory', '$localStorage', '$window', function ($scope, $state, $rootScope, AuthFactory, $localStorage, $window) {
 
@@ -247,11 +239,11 @@ $scope.orderByText = "";
         $scope.loggedIn = AuthFactory.isAuthenticated();
         $scope.username = AuthFactory.getUsername();
         $scope.userid = AuthFactory.getUserId();
-    });
+    }); 
     
-    /*$rootScope.$on('logout:Successful', function () {
-        $scope.rememberMe = false;
-    });*/
+    $rootScope.$on('logout:Successful', function () {
+        //$scope.$digest();
+    });
 
     /*$scope.stateis = function(curstate) {
        return $state.is(curstate);
@@ -260,6 +252,28 @@ $scope.orderByText = "";
     
 
 }])
+
+
+.controller('DinnerHomeController',['$scope','$localStorage', '$window', 'AuthFactory', '$state', '$timeout', function($scope, $localStorage, $window, AuthFactory, $state, $timeout) {
+    $scope.orderByText = "";
+    $scope.loginData = $localStorage.getObject('userinfo','{}');
+
+    $scope.doLogin = function() {
+        if($scope.rememberMe) {
+           $localStorage.storeObject('userinfo',$scope.loginData);
+        }
+         
+        AuthFactory.login($scope.loginData);
+      
+        if(AuthFactory.isAuthenticated()) {
+            $scope.loggedIn = true;
+            $scope.username = AuthFactory.getUsername();
+            $state.go('app.managedishes',{},{reload:true});
+        } 
+    }; 
+
+}])
+
 
 .controller('MenuController', ['$scope','menuFactory', 'dishFactory','favouriteFactory', '$state', 'baseURL', 'AuthFactory', function($scope,  menuFactory, dishFactory, favouriteFactory, $state, baseURL, AuthFactory) {
         $scope.showItems = false;

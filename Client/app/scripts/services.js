@@ -75,7 +75,7 @@ angular
     };
 }])
 
-.factory('AuthFactory', ['$resource', '$http', '$localStorage', '$rootScope', '$window', 'baseURL', function($resource, $http, $localStorage, $rootScope, $window, baseURL){
+.factory('AuthFactory', ['$resource', '$http', '$localStorage', '$rootScope','$window', 'baseURL', '$timeout', function($resource, $http, $localStorage, $rootScope, $window, baseURL, $timeout){
 
     var authFac = {},
         TOKEN_KEY = 'Token',
@@ -94,18 +94,17 @@ angular
         $http.defaults.headers.common['x-access-token'] = authToken;
       }
 
-      function loadUserCredentials() {
+   function loadUserCredentials() {
         var credentials = $localStorage.getObject(TOKEN_KEY,'{}');
         if (credentials.username !== undefined) {
           useCredentials(credentials);
         }
-      }
+    }
 
-      function storeUserCredentials(credentials) {
-        $localStorage.storeObject(TOKEN_KEY, credentials);
-        useCredentials(credentials);
-      }
-
+   function storeUserCredentials(credentials) {
+      $localStorage.storeObject(TOKEN_KEY, credentials);
+      useCredentials(credentials);
+   }
 
 
   function destroyUserCredentials() {
@@ -121,8 +120,8 @@ angular
 
     authFac.login = function(loginData) {
         console.log('loginData:: ' + loginData);
-        $resource(baseURL + "users/login") //resource end point on rest api server!!
-        .save(loginData,
+        //resource end point on rest api server!!
+        $resource(baseURL + "users/login").save(loginData,
            function(response) {
               storeUserCredentials({username:loginData.username, token: response.token, userid: response.userid});
               $rootScope.$broadcast('login:Successful');
@@ -135,17 +134,17 @@ angular
     };
 
     authFac.logout = function() {
-         
+
         $resource(baseURL + "users/logout").get(function(response){
-            $rootScope.$broadcast('logout:Successful');
+            //$rootScope.$broadcast('logout:Successful');
         });
         destroyUserCredentials();
-       
+
     };
 
     authFac.register = function(registerData) {
-
-        $resource(baseURL + "users/register")
+        console.log('Registering.. %s', registerData);
+        $resource(baseURL + "users/signup")
         .save(registerData,
            function(response) {
               authFac.login({username:registerData.username, password:registerData.password});
@@ -171,9 +170,13 @@ angular
     authFac.getUsername = function() {
         return username;
     };
-    
+
     authFac.getUserId = function() {
         return userid;
+    };
+
+    authFac.setAuthenticated = function(value) {
+        this.isAuthenticated = value;
     };
 
     loadUserCredentials();

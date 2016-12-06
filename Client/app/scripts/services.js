@@ -75,6 +75,25 @@ angular
     };
 }])
 
+.factory('loginFactory', ['$resource', '$http', 'baseURL',  function($resource, $http,  baseURL){
+      
+       return $resource(baseURL + "users/login", null, {
+            'update': {
+                method: 'PUT'
+            }
+        });
+}])
+
+.factory('registerFactory', ['$resource', '$http', 'baseURL',  function($resource, $http,  baseURL){
+      
+       return $resource(baseURL + "users/signup", null, {
+            'update': {
+                method: 'PUT'
+            }
+        });
+}])
+
+
 .factory('AuthFactory', ['$resource', '$http', '$localStorage', '$rootScope','$window', 'baseURL', '$timeout', function($resource, $http, $localStorage, $rootScope, $window, baseURL, $timeout){
 
     var authFac = {},
@@ -131,7 +150,8 @@ angular
               isAuthenticated = false;
            }
         );
-    };
+    }; 
+ 
 
     authFac.logout = function() {
 
@@ -162,9 +182,14 @@ angular
 
         );
     };
+    
+    authFac.storeCredentials = function(credentials) {
+      $localStorage.storeObject(TOKEN_KEY, credentials);
+      useCredentials(credentials);
+    };
 
-    authFac.isAuthenticated = function() {
-        return isAuthenticated;
+    authFac.getAuthenticated = function() {
+        return this.isAuthenticated;
     };
 
     authFac.getUsername = function() {

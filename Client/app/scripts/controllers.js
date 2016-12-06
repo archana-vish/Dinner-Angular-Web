@@ -145,17 +145,6 @@ angular
 }])
 
 
-.controller('SignupController', ['$scope','AuthFactory', function($scope, AuthFactory) {
-    $scope.orderByText = "";
-    $scope.register={};
-    $scope.loginData={};
-    
-    $scope.signup = function() {
-        console.log('Doing registration', $scope.signup);
-
-        AuthFactory.register($scope.registration);
-    };
-}])
 
 .controller('AddDishController',['$scope','$timeout', 'dishFactory', 'Upload', '$state', 'baseURL', 'AuthFactory', function($scope, $timeout, dishFactory, Upload, $state, baseURL, AuthFactory ) {
     $scope.orderByText = "";
@@ -211,7 +200,7 @@ angular
     $scope.username = '';
     $scope.userid = '';
 
-    if(AuthFactory.isAuthenticated()) {
+    if(AuthFactory.getAuthenticated()) {
         $scope.loggedIn = true;
         $scope.username = AuthFactory.getUsername();
         $scope.userid = AuthFactory.getUserId();
@@ -254,7 +243,7 @@ angular
 }])
 
 
-.controller('DinnerHomeController',['$scope','$localStorage', '$window', 'AuthFactory', '$state', '$timeout', function($scope, $localStorage, $window, AuthFactory, $state, $timeout) {
+.controller('DinnerHomeController',['$scope','$localStorage', '$window', 'loginFactory','AuthFactory', '$state', '$timeout', function($scope, $localStorage, $window, loginFactory, AuthFactory, $state, $timeout) {
     $scope.orderByText = "";
     $scope.loginData = $localStorage.getObject('userinfo','{}');
 
@@ -262,18 +251,58 @@ angular
         if($scope.rememberMe) {
            $localStorage.storeObject('userinfo',$scope.loginData);
         }
-         
-        AuthFactory.login($scope.loginData);
-      
-        if(AuthFactory.isAuthenticated()) {
+        loginFactory.save($scope.loginData).$promise.then(
+        function(response) {
+            //console.log(response);
+            AuthFactory.storeCredentials({username:$scope.loginData.username, token: response.token, userid: response.userid});
+            AuthFactory.setAuthenticated(true);
             $scope.loggedIn = true;
             $scope.username = AuthFactory.getUsername();
-            $state.go('app.managedishes',{},{reload:true});
-        } 
+            
+            //console.log(AuthFactory.isAuthenticated());
+             $state.go('app.managedishes',{},{reload:true});
+        }, function(response) {
+            //console.log('error %s', response);
+             AuthFactory.setAuthenticated(false);
+            // console.log(AuthFactory.isAuthenticated());
+        });
+      
     }; 
 
 }])
 
+
+.controller('SignupController', ['$scope','registerFactory', 'loginFactory','AuthFactory', '$localStorage', '$state', function($scope, registerFactory, loginFactory, AuthFactory, $localStorage, $state) {
+    $scope.orderByText = "";
+    $scope.register={};
+    $scope.loginData={};
+
+    $scope.doRegister = function() {
+        if($scope.rememberMe) {
+           $localStorage.storeObject('userinfo',$scope.signup);
+        }
+        registerFactory.save($scope.signup).$promise.then(
+        function(response) {
+            //console.log(response);
+            $scope.loginData = {username:$scope.signup.username, password:$scope.signup.password};
+            loginFactory.save($scope.loginData).$promise.then(
+            function(response) {
+                //console.log(response);
+                AuthFactory.storeCredentials({username:$scope.loginData.username, token: response.token, userid: response.userid});
+                AuthFactory.setAuthenticated(true);
+                $scope.loggedIn = true;
+                $scope.username = AuthFactory.getUsername();
+
+                //console.log(AuthFactory.isAuthenticated());
+                 $state.go('app.managedishes',{},{reload:true});
+            }, function(response) {
+                //console.log('error %s', response);
+                 AuthFactory.setAuthenticated(false);
+                // console.log(AuthFactory.isAuthenticated());
+            });
+        });
+    }; 
+}])
 
 .controller('MenuController', ['$scope','menuFactory', 'dishFactory','favouriteFactory', '$state', 'baseURL', 'AuthFactory', function($scope,  menuFactory, dishFactory, favouriteFactory, $state, baseURL, AuthFactory) {
         $scope.showItems = false;

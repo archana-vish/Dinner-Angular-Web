@@ -37,6 +37,7 @@ router.post('/signup', function(req, res) {
         }),
         req.body.password, function(err, user) {
         if (err) {
+            console.log('error while registering %s ', err);
             return res.status(500).json({err: err});
         }
 

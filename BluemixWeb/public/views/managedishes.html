@@ -1,0 +1,67 @@
+ <!-- include header -->
+<div class="wrapper">
+        <div class="header header-filter" style="background-image: url('assets/img/feast.jpg');"></div>
+
+        <div class="main main-raised">
+            <div class="profile-content">
+                <div class="container">
+                    <div class="col-xs-12" ng-if="!showDishes">
+                        <h3>{{message}}</h3>
+                    </div>
+                    <div class="row" ng-if="showDishes">
+                            <form class="form myform" method="" action="">
+                                <div class="card-signup header-primary text-center">
+                                    <h4>Manage your dish</h4>
+                                    <div class="social-line text-right">
+                                         <label>
+                                            Add your dish to the today's menu or just edit  your dish
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="content">
+                                    <br>
+                                     
+                                            <div class="col-sm-12 text-right">
+                                                <input id="sortby" type="text" placeholder="Quick search for..." ng-model="sortby" >
+                                            </div>
+                                    <!-- Dish tab -->
+                                    <span ng-model="chefid"></span>
+                                    <div ng-repeat="dish in dishes | orderBy: '-id' |  filter:chefid | filter: sortby">
+                                      <div class="col-sm-12">
+                                        <div class=" media col-sm-3">
+                                            <a ui-sref="app.dishdetail({id: dish._id})">
+                                               <img class="media-object media-left media-middle img-responsive img-padded-top"  ng-src={{imgURL+dish.image}}>
+                                            </a>
+                                        </div>
+                                        <div class="col-sm-7">
+                                            <h4 class="title"> {{dish.name}}
+                                                <span class="label label-success label-center">{{dish.cuisine}}</span> 
+                                                <span class="label label-success label-center">{{dish.price|currency}}</span>
+                                                <span class="label label-success label-center">{{dish.chef.firstname}}</span>
+                                             <input-stars max="5" ng-model="dish.stars" readonly></input-stars> 
+                                            <h6 class="text-danger">{{dish.allergy}}</h6>
+                                            
+                                            <p>{{dish.description}}
+                                                <a class="btn btn-warning btn-xs" ui-sref="app.dishdetail({id: dish._id})">More &raquo;</a> </p>
+                                        </div>
+                                        <div class="col-sm-2 text-left">
+                                            <br>
+                                            <button class="btn btn-round btn-sm btn-warning" ng-click="addToMenu(dish.chef._id, dish._id)" ng-model="dishIndex">
+                                                <i class="material-icons">add_circle</i> Add to today's menu</button>
+                                            <br>
+                                            <a class="btn btn-round btn-sm btn-warning" ui-sref="app.editdish({id: dish._id})">
+                                                <i class="material-icons">create</i> Edit this dish</a>
+                                        </div>
+                                    </div>
+                                    <br>
+                                </div>
+                                    
+                                </div>
+                            </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>

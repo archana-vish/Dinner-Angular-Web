@@ -6,6 +6,7 @@
 
 angular
 .module('dinnerApp')
+//constant("baseURL","https://dinner.eu-gb.mybluemix.net/") // <- connect to Bluemix
 .constant("baseURL","http://localhost:3000/") // <- to connect to json or mongodb non secure
 //.constant("baseURL","https://localhost:3443/") //<- to connect to rest and mongodb
 .factory('dishFactory', ['$resource', 'baseURL', function ($resource, baseURL) {
@@ -76,7 +77,7 @@ angular
 }])
 
 .factory('loginFactory', ['$resource', '$http', 'baseURL',  function($resource, $http,  baseURL){
-      
+
        return $resource(baseURL + "users/login", null, {
             'update': {
                 method: 'PUT'
@@ -85,7 +86,7 @@ angular
 }])
 
 .factory('registerFactory', ['$resource', '$http', 'baseURL',  function($resource, $http,  baseURL){
-      
+
        return $resource(baseURL + "users/signup", null, {
             'update': {
                 method: 'PUT'
@@ -151,8 +152,8 @@ angular
               isAuthenticated = false;
            }
         );
-    }; 
- 
+    };
+
 
     authFac.logout = function() {
 
@@ -186,7 +187,7 @@ angular
 
         );
     };
-    
+
     authFac.storeCredentials = function(credentials) {
       $localStorage.storeObject(TOKEN_KEY, credentials);
       useCredentials(credentials);

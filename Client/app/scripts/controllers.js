@@ -15,7 +15,7 @@ angular
             $scope.imgURL = baseURL;
             //console.log('user id %s ', AuthFactory.getUserId());
             $scope.chefid = AuthFactory.getUserId();
-    
+
             dishFactory.query(
                 function(response) {
                     $scope.dishes = response;
@@ -74,7 +74,7 @@ angular
             };
 }])
 
-.controller('EditDishController', ['$scope','$timeout','$stateParams','$window', 'dishFactory', 'Upload', 'baseURL', function($scope, $timeout, $stateParams, $window, dishFactory, Upload, baseURL) {
+.controller('EditDishController', ['$scope','$timeout','$stateParams','$window', 'dishFactory', 'Upload', 'baseURL', '$state', function($scope, $timeout, $stateParams, $window, dishFactory, Upload, baseURL, $state) {
             $scope.orderByText = "";
             $scope.showFeedback = true;
             $scope.showAddFeedback = true;
@@ -103,7 +103,8 @@ angular
                      console.log('image not changed' + $scope.dish.image);
                      $scope.dish.image = $scope.dish.image.substring($scope.imgURL.length);
                      dishFactory.update({id:$scope.dish._id}, $scope.dish);
-                     $window.location.reload();
+                     //$window.location.reload();
+                     $state.go('app.managedishes',{}, {reload: true});
                  }
                  else {
                      //$scope.dish.image = 'assets/img/dishes/' + $scope.dish.image.name;
@@ -119,7 +120,8 @@ angular
                         console.log('new image :: ' + $scope.dish.image);
                         dishFactory.update({id:$scope.dish._id}, $scope.dish);
 
-                        $window.location.reload();
+                        //$window.location.reload();
+                        $state.go('app.managedishes',{}, {reload: true});
                       });
                     }, function (response) {
                       if (response.status > 0) {
@@ -174,7 +176,7 @@ angular
                 console.log('Success ' + response.status + ' : ' + response.data + ' : ' + response.data.filename);
                 $scope.newDish.image = 'uploads/dishes/' + response.data.filename;
                 console.log($scope.newDish.description);
-                  
+
                 $scope.newDish.chef = AuthFactory.getUserId();
                 dishFactory.save($scope.newDish);
                 $scope.picFile = "";
@@ -204,7 +206,7 @@ angular
         $scope.loggedIn = true;
         $scope.username = AuthFactory.getUsername();
         $scope.userid = AuthFactory.getUserId();
-    } 
+    }
 
     $scope.openLogin = function () {
         //ngDialog.open({ template: 'views/login.html', scope: $scope, className: 'ngdialog-theme-default', controller:"LoginController" });
@@ -228,8 +230,8 @@ angular
         $scope.loggedIn = AuthFactory.isAuthenticated();
         $scope.username = AuthFactory.getUsername();
         $scope.userid = AuthFactory.getUserId();
-    }); 
-    
+    });
+
     $rootScope.$on('logout:Successful', function () {
         //$scope.$digest();
     });
@@ -237,8 +239,8 @@ angular
     /*$scope.stateis = function(curstate) {
        return $state.is(curstate);
     };*/
-    
-    
+
+
 
 }])
 
@@ -258,7 +260,7 @@ angular
             AuthFactory.setAuthenticated(true);
             $scope.loggedIn = true;
             $scope.username = AuthFactory.getUsername();
-            
+
             //console.log(AuthFactory.isAuthenticated());
              $state.go('app.managedishes',{},{reload:true});
         }, function(response) {
@@ -266,8 +268,8 @@ angular
              AuthFactory.setAuthenticated(false);
             // console.log(AuthFactory.isAuthenticated());
         });
-      
-    }; 
+
+    };
 
 }])
 
@@ -301,7 +303,7 @@ angular
                 // console.log(AuthFactory.isAuthenticated());
             });
         });
-    }; 
+    };
 }])
 
 .controller('MenuController', ['$scope','menuFactory', 'dishFactory','favouriteFactory', '$state', 'baseURL', 'AuthFactory', function($scope,  menuFactory, dishFactory, favouriteFactory, $state, baseURL, AuthFactory) {

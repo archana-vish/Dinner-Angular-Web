@@ -17,8 +17,6 @@ var multer = require('multer');
 var cors = require('cors');
 var fs = require('fs');
 
-
-
 // Connect to Mongoose
 var mongoose = require('mongoose');
 var config = require('./config');

@@ -27,6 +27,21 @@ angular
                     }
                 }
             })
+            // route for about us
+            .state('app.aboutus', {
+                url:'aboutus',
+                views: {
+                    'header@': {
+                        templateUrl : 'views/header.html'
+                    },
+                    'content@': {
+                        templateUrl : 'views/aboutus.html'
+                    },
+                     'footer@': {
+                      templateUrl : 'views/footernone.html'
+                    }
+                }
+            })
             // route for the signup page
             .state('app.signup', {
                 url:'signup',

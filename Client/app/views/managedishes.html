@@ -1,6 +1,6 @@
  <!-- include header -->
 <div class="wrapper">
-        <div class="header header-filter" style="background-image: url('assets/img/feast.jpg');"></div>
+        <div class="header header-filter" style="background-image: url('assets/img/feast_original.jpg');"></div>
 
         <div class="main main-raised">
             <div class="profile-content">
@@ -14,7 +14,7 @@
                                     <h4>Manage your dish</h4>
                                     <div class="social-line text-right">
                                          <label>
-                                            Add your dish to the today's menu or just edit  your dish
+                                            Add your dish to today's menu or just edit  your dish
                                         </label>
                                     </div>
                                 </div>
@@ -47,7 +47,7 @@
                                         <div class="col-sm-2 text-left">
                                             <br>
                                             <button class="btn btn-round btn-sm btn-warning" ng-click="addToMenu(dish.chef._id, dish._id)" ng-model="dishIndex">
-                                                <i class="material-icons">add_circle</i> Add to today's menu</button>
+                                                <i class="material-icons">add_circle</i> Add to Menu</button>
                                             <br>
                                             <a class="btn btn-round btn-sm btn-warning" ui-sref="app.editdish({id: dish._id})">
                                                 <i class="material-icons">create</i> Edit this dish</a>

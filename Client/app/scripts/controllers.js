@@ -296,7 +296,7 @@ angular
                 $scope.username = AuthFactory.getUsername();
 
                 //console.log(AuthFactory.isAuthenticated());
-                 $state.go('app.managedishes',{},{reload:true});
+                 $state.go('app.adddish',{},{reload:true});
             }, function(response) {
                  console.log('error %s', response);
                  AuthFactory.setAuthenticated(false);

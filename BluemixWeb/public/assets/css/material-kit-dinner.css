@@ -118,13 +118,13 @@
 .logo-container .logo{
     overflow: hidden;
     border-radius: 50%;
-    border: 1px solid #333333;
+    border: 0px solid #333333;
     width: 50px;
     float: left;
 }
 
 .logo-container .brand{
-    font-size: 16px;
+    font-size: 21px;
     color: #FFFFFF;
     line-height: 18px;
     float: left;
@@ -463,4 +463,5 @@ ul.rating {
 .rating .filled {
     color: yellow;
 }
+
 

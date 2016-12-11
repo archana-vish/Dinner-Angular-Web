@@ -248,6 +248,7 @@ angular
 .controller('DinnerHomeController',['$scope','$localStorage', '$window', 'loginFactory','AuthFactory', '$state', function($scope, $localStorage, $window, loginFactory, AuthFactory, $state) {
     $scope.orderByText = "";
     $scope.loginData = $localStorage.getObject('userinfo','{}');
+    $scope.invalid = false;
 
     $scope.doLogin = function() {
         if($scope.rememberMe) {
@@ -262,10 +263,12 @@ angular
             $scope.username = AuthFactory.getUsername();
 
             //console.log(AuthFactory.isAuthenticated());
+             $scope.invalid = false;
              $state.go('app.managedishes',{},{reload:true});
         }, function(response) {
              console.log('error %s', response);
              AuthFactory.setAuthenticated(false);
+             $scope.invalid = true;
             // console.log(AuthFactory.isAuthenticated());
         });
 

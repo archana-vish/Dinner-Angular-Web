@@ -5,7 +5,7 @@
             <div class="profile-content">
                 <div class="container">
                     <div class="row">
-                            <form class="form" name="addDishForm" >
+                            <form class="form" name="addDishForm" ng-submit="createDish(picFile)" >
                                 <div class="card-signup header-primary text-center">
                                     <h4>Add your dish</h4>
                                     <div class="social-line">
@@ -31,8 +31,8 @@
                                                 </div>
                                             </div>
                                         <div class="col-sm-6">
-                                           <input type="text" id="dishname" class="form-control" placeholder="Dish's name..." ng-model=newDish.name>
-                                           <input type="text" id="cuisine" class="form-control" placeholder="Cuisine.. eg. Italian, Greek, Indian etc" ng-model=newDish.cuisine>
+                                           <input type="text" id="dishname" class="form-control" placeholder="Dish's name..." ng-model=newDish.name required>
+                                           <input type="text" id="cuisine" class="form-control" placeholder="Cuisine.. eg. Italian, Greek, Indian etc" ng-model=newDish.cuisine required>
                                             <!--
                                             <select class="form-control" id="cuisine" ng-model=dish.cuisine>
                                                 <option> Cuisine Type </option>
@@ -41,8 +41,8 @@
                                                 <option>Chinese</option>
                                                 <option>Thai</option>
                                             </select-->
-                                           <input type="text" id="price" class="form-control" placeholder="Price" ng-model=newDish.price>
-                                           <input type="text" id="allergy" class="form-control" placeholder="Allergy Advice..." ng-model=newDish.allergy>
+                                           <input type="number" id="price" class="form-control" placeholder="Price" ng-model=newDish.price min="1" step="0.01" required>
+                                           <input type="text" id="allergy" class="form-control" placeholder="Allergy Advice..." ng-model=newDish.allergy required>
                                         </div>
                                     </div>
 
@@ -59,13 +59,15 @@
 
                                             <span class="input-group-addon">
                                             </span>
-                                            <textarea id="dishdetail" class="form-control" rows="5" ng-model=newDish.description> </textarea>
+                                            <textarea id="dishdetail" class="form-control" rows="5" ng-model=newDish.description required> </textarea>
 
                                     </div>
                                   
                                 </div>
                                 <div class="footer text-right">
-                                    <button type="submit" ng-click="createDish(picFile)" class="btn btn-primary">Add my dish</button>
+<!--                                    <button type="submit" ng-click="createDish(picFile)" class="btn btn-primary" ng-disabled="addDishForm.$invalid">Add my dish</button>-->
+                                    <button type="submit" class="btn btn-primary" ng-disabled="addDishForm.$invalid">Add my dish</button>
+
                                 </div>
                                  
                             </form>

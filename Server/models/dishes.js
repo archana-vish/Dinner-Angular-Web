@@ -25,13 +25,13 @@ var commentSchema = new Schema(
             type: Date,
             required: false
         },
-        customer: 
+        customer:
         {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User'
             // When posting comments the registered user is a customer
         }
-    }, 
+    },
     {
         timestamps: true
     },
@@ -46,8 +46,7 @@ var commentSchema = new Schema(
 var dishSchema = new Schema({
     name: {
         type: String,
-        required: true,
-        unique: true
+        required: true
     },
     image: {
         type: String,
@@ -72,7 +71,7 @@ var dishSchema = new Schema({
     },
     chef: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User' 
+        ref: 'User'
         // When posting a dish only the registered user can create the dish - so he is the chef
     },
     comments:[commentSchema]

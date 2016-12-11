@@ -38,7 +38,7 @@
                                                       <div class="col-sm-2"><h6> {{order.customer.firstname}} </h6></div>
                                                        <div class="col-sm-10 text-right" >
                                                           <i class="material-icons">local_phone</i> {{order.customer.phone}}
-                                                          <i class="material-icons">shopping_cart</i> £{{total}}
+                                                          <i class="material-icons">shopping_cart</i> ${{total}}
                                                           <button ng-if="order.status == 'new'" class="btn btn-warning btn-round" rel="tooltip" title="Accept order" ng-click="updateOrder(order._id, order, 'wip');">
                                                               <i class="material-icons">notifications_active</i> Accept Order
                                                           </button>
@@ -75,13 +75,13 @@
                                                   <td class="text-center">{{$index+1}}</td>
                                                   <td><p>{{dishordered.dish.name}}</p></td>
                                                   <td>{{dishordered.quantity}}</td>
-                                                  <td ng-init="itemTotal = dishordered.dish.price * dishordered.quantity; $parent.total = $parent.total + itemTotal" align="right">£{{itemTotal}}</td>
+                                                  <td ng-init="itemTotal = dishordered.dish.price * dishordered.quantity; $parent.total = $parent.total + itemTotal" align="right">${{itemTotal}}</td>
                                               </tr>
                                               <tr>
                                                   <td></td>
                                                   <td><b>Total</b></td>
                                                   <td></td>
-                                                  <td align="right">£{{total}}</td>
+                                                  <td align="right">${{total}}</td>
 
                                               </tr>
                                               </div>
